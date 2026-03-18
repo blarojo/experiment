@@ -1,5 +1,7 @@
 # experiment
 
+![CI](https://github.com/blarojo/experiment/actions/workflows/ci.yml/badge.svg)
+
 A Hello World REST API built with [Quarkus](https://quarkus.io/) 3.32.4.
 
 Exposes a single endpoint: `GET /hello` → `Hello from Quarkus REST`
@@ -39,6 +41,12 @@ mvn test
 # Unit + integration tests (requires native build)
 mvn verify -Pnative
 ```
+
+## CI
+
+GitHub Actions runs on every push to `main` or `feature/**` branches, and on pull requests to `main`.
+
+The pipeline builds the project and runs all unit tests via `mvn verify`. Workflow definition: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 
 ## Endpoints
 
