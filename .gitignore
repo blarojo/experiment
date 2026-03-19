@@ -1,0 +1,5 @@
+# Maven
+target/
+
+# Claude Code
+.claude/
