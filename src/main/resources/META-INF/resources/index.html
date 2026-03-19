@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Points Counter</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #f0f2f5;
+      gap: 2rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #555;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    #score {
+      font-size: 6rem;
+      font-weight: bold;
+      color: #222;
+      line-height: 1;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    button {
+      padding: 0.75rem 1.75rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    button:hover { opacity: 0.85; }
+    button:active { opacity: 0.7; }
+
+    #btn-increment { background: #28a745; color: #fff; }
+    #btn-decrement { background: #dc3545; color: #fff; }
+    #btn-reset     { background: #6c757d; color: #fff; }
+
+    #error {
+      color: #dc3545;
+      font-size: 0.9rem;
+      min-height: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Points Counter</h1>
+  <div id="score">—</div>
+  <div class="buttons">
+    <button id="btn-increment">+ Point</button>
+    <button id="btn-decrement">- Point</button>
+    <button id="btn-reset">Reset</button>
+  </div>
+  <div id="error"></div>
+
+  <script>
+    const score = document.getElementById('score');
+    const errorEl = document.getElementById('error');
+
+    async function callApi(path, method = 'GET') {
+      errorEl.textContent = '';
+      try {
+        const res = await fetch(path, { method });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const value = await res.text();
+        score.textContent = value;
+      } catch (err) {
+        errorEl.textContent = `Error: ${err.message}`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      callApi('/api/counter');
+      document.getElementById('btn-increment').addEventListener('click', () => callApi('/api/counter/increment', 'POST'));
+      document.getElementById('btn-decrement').addEventListener('click', () => callApi('/api/counter/decrement', 'POST'));
+      document.getElementById('btn-reset').addEventListener('click',     () => callApi('/api/counter/reset',      'POST'));
+    });
+  </script>
+</body>
+</html>
